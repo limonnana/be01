@@ -2,14 +2,10 @@ package com.limonnana.be01.repository;
 
 import com.limonnana.be01.entity.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 @Repository
-public class UserRepository {
-
-    public User findUserByEmail(String email){
-        User user = new User();
-        user.setUsername("rosenzvaig@gmail.com");
-        user.setPassword("avocado1");
-        return user;
-    }
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
 }
