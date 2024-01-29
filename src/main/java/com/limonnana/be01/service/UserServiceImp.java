@@ -27,7 +27,7 @@ public class UserServiceImp implements UserService{
 
 
 
-    @Transactional
+
     public User addUser(User user) {
         user = userRepository.saveAndFlush(user);
         return user;

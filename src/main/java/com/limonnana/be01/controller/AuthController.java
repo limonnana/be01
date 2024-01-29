@@ -3,7 +3,7 @@ package com.limonnana.be01.controller;
 
 import com.limonnana.be01.entity.User;
 import com.limonnana.be01.service.TokenService;
-import com.limonnana.be01.service.UserServiceImp;
+import com.limonnana.be01.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,20 +15,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/rest/auth")
 public class AuthController {
 
-
-    private PasswordEncoder passwordEncoder;
-
-    UserServiceImp userService;
-
     private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
 
+    private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthController(TokenService tokenService, AuthenticationManager authenticationManager, UserServiceImp userService, PasswordEncoder passwordEncoder) {
+    private final UserService userService;
+
+    public AuthController(TokenService tokenService, AuthenticationManager authenticationManager, UserService userService, PasswordEncoder passwordEncoder) {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
@@ -49,6 +48,8 @@ public class AuthController {
     public String chau(){
         return "che chau !";
     }
+
+
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody User user){
 

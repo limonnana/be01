@@ -140,17 +140,7 @@ public class SecurityConfig {
     }
     */
 
-/**
-    @Bean
-    public InMemoryUserDetailsManager users() {
-        return new InMemoryUserDetailsManager(
-            User.withUsername("limonnana")
-                .password("{noop}avocado1")
-                .authorities("read")
-                .build()
-        );
-    }
-**/
+
 
     @Bean
     JwtDecoder jwtDecoder() {
@@ -168,8 +158,10 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://localhost:4200"));
+        configuration.setAllowedOrigins(List.of("https://localhost:4200/**"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET"));
+        configuration.setAllowedMethods(List.of("POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
-	/*
-    @GetMapping("/")
+
+    @GetMapping("/principal")
 	public String home(Principal principal) {
 		return "Hello, " + principal.getName();
 	}
-	*/
+
 
     @GetMapping("/")
     public String home() {
