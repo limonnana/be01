@@ -1,12 +1,16 @@
 package com.limonnana.be01.controller;
 
 
+import com.limonnana.be01.entity.LoginDto;
+import com.limonnana.be01.entity.ResponseApi;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import com.limonnana.be01.entity.User;
 import com.limonnana.be01.service.TokenService;
 import com.limonnana.be01.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -51,18 +55,25 @@ public class AuthController {
 
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody User user){
+    public ResponseEntity<User> login(@RequestBody User user){
 
         Authentication authentication =
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         String name = authentication.getName();
+        User u = userService.getUserByUsername(name);
+        u.setPassword("");
         String token = tokenService.generateToken(authentication);
        boolean b = authentication.isAuthenticated();
         LOG.info("authenticated: " + b);
-        LOG.info("TOKEN: " + token);
         LOG.info(" 2 token: " + authentication.getPrincipal().toString());
 
-       return new ResponseEntity<>("TOKEN: " + token, HttpStatus.OK);
+        u.setToken(token);
+
+        HttpHeaders headers = new HttpHeaders();
+
+        ResponseEntity<User> entity = new ResponseEntity<User>(u,headers,HttpStatus.OK);
+
+        return entity;
     }
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public ResponseEntity<User> register(@RequestBody User user){

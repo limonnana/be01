@@ -25,6 +25,9 @@ public class User {
     @Column
     private String password;
 
+    @Transient
+    private String token;
+
 
 
 

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CustomAuthenticationProviderImp implements  CustomAuthenticationProvider{
@@ -52,7 +53,8 @@ public class CustomAuthenticationProviderImp implements  CustomAuthenticationPro
         com.limonnana.be01.entity.User u = new com.limonnana.be01.entity.User();
         u.setUsername(name);
         u.setPassword(password);
-        if (userService.userLogin(u).isPresent()) {
+        Optional<com.limonnana.be01.entity.User> userOptional = userService.userLogin(u);
+        if (userOptional.isPresent()) {
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
             final UserDetails principal = new User(name, password, grantedAuths);

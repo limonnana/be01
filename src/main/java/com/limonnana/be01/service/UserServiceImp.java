@@ -25,9 +25,6 @@ public class UserServiceImp implements UserService{
 
 
 
-
-
-
     public User addUser(User user) {
         user = userRepository.saveAndFlush(user);
         return user;
@@ -61,5 +58,9 @@ public class UserServiceImp implements UserService{
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
         return users;
+    }
+
+    public User getUserByUsername(String username){
+        return  userRepository.findByUsername(username).get();
     }
 }
