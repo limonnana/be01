@@ -24,26 +24,6 @@ public class CustomAuthenticationProviderImp implements  CustomAuthenticationPro
     public CustomAuthenticationProviderImp(@Lazy UserService userService) {
         this.userService = userService;
     }
-/*
-    @Override
-    public Authentication authenticate(Authentication authentication)
-        throws AuthenticationException {
-
-
-        String name = authentication.getName();
-        String password = authentication.getCredentials().toString();
-
-     //  if (shouldAuthenticateAgainstThirdPartySystem()) {
-
-            // use the credentials
-            // and authenticate against the third-party system
-            return new UsernamePasswordAuthenticationToken(
-               name, password, new ArrayList<>());
-      //  } else {
-      //      return null;
-     //  }
-    }
-*/
 
 
     @Override

@@ -18,4 +18,6 @@ public interface UserService {
     public List<User> getUsers();
 
     public User getUserByUsername(String username);
+
+    public User saveUser(User user);
 }

@@ -1,8 +1,11 @@
 package com.limonnana.be01.config;
 
 import com.limonnana.be01.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -36,42 +39,24 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  //  private final CustomUserDetailsService customUserDetailsService;
     private final RsaKeyProperties rsaKeys;
-
     private final CustomAuthenticationProvider customAuthenticationProvider;
-
-
-
     private final UserDetailsService userDetailsService;
+
+    @Value("${mail.admin")
+    private String mailAdmin;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
 
     public SecurityConfig(RsaKeyProperties rsaKeys, CustomUserDetailsService customUserDetailsService, CustomAuthenticationProviderImp customAuthenticationProvider,  UserDetailsService userDetailsService) {
         this.rsaKeys = rsaKeys;
-     //   this.customUserDetailsService = customUserDetailsService;
         this.customAuthenticationProvider = customAuthenticationProvider;
         this.userDetailsService = userDetailsService;
     }
-
-    /*
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-            .csrf(csrf -> csrf.disable())
-            .authorizeRequests()
-
-            .requestMatchers("/rest/auth/**").permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .httpBasic(Customizer.withDefaults())
-       .build();
-    }
-
-
-     */
-
-
 
 
     @Bean
@@ -102,46 +87,6 @@ public class SecurityConfig {
     }
 
 
-/*
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-            http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider);
-        return authenticationManagerBuilder.build();
-    }
-  */
-
-
-/*
-    @Bean
-    public AuthenticationManager authenticationManager(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(passwordEncoder);
-        authProvider.setUserDetailsService(userDetailsService);
-        return new ProviderManager(authProvider);
-    }
-
- */
-
-
-
-
-
-
-
-    /*
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, NoOpPasswordEncoder noOpPasswordEncoder)
-        throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(noOpPasswordEncoder);
-        return authenticationManagerBuilder.build();
-    }
-    */
-
-
-
     @Bean
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(rsaKeys.publicKey()).build();
@@ -166,14 +111,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-    /*
-    @SuppressWarnings("deprecation")
-    @Bean
-    public NoOpPasswordEncoder passwordEncoder() {
-        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    }
-    */
 
    @Bean
     public BCryptPasswordEncoder passwordEncoder() {

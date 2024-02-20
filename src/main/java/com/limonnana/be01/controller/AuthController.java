@@ -3,6 +3,7 @@ package com.limonnana.be01.controller;
 
 import com.limonnana.be01.entity.LoginDto;
 import com.limonnana.be01.entity.ResponseApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -28,8 +29,10 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
-
     private final UserService userService;
+
+    @Value( "${mail.admin}" )
+    private String mailAdmin;
 
     public AuthController(TokenService tokenService, AuthenticationManager authenticationManager, UserService userService, PasswordEncoder passwordEncoder) {
         this.tokenService = tokenService;
@@ -80,8 +83,25 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User u = userService.addUser(user);
        return new ResponseEntity<>(u, HttpStatus.OK);
-
     }
+
+    @RequestMapping(value = "setAdmin", method = RequestMethod.GET)
+    public String setAdmin(){
+        String result = "SUCCESS";
+        try {
+            if (this.mailAdmin != null) {
+                User u = userService.getUserByUsername(this.mailAdmin);
+                u.setAdmin(true);
+                userService.saveUser(u);
+            }
+        }catch(Exception e){
+            LOG.info(e.getMessage());
+            LOG.info("mailAdmin is NULL ");
+            result = " FAILED";
+            }
+        return result;
+    }
+
 
     @GetMapping(value = "/hola")
     public String hola(){

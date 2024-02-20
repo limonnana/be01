@@ -28,6 +28,9 @@ public class User {
     @Transient
     private String token;
 
+    @Column
+    private boolean isAdmin;
+
 
 
 
