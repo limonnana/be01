@@ -65,6 +65,7 @@ public class AuthController {
         String name = authentication.getName();
         User u = userService.getUserByUsername(name);
         u.setPassword("");
+        u.setAdmin(u.isAdmin());
         String token = tokenService.generateToken(authentication);
        boolean b = authentication.isAuthenticated();
         LOG.info("authenticated: " + b);
