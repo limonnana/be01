@@ -65,11 +65,11 @@ public class AuthController {
         String name = authentication.getName();
         User u = userService.getUserByUsername(name);
         u.setPassword("");
-        u.setAdmin(u.isAdmin());
         String token = tokenService.generateToken(authentication);
        boolean b = authentication.isAuthenticated();
         LOG.info("authenticated: " + b);
-        LOG.info(" 2 token: " + authentication.getPrincipal().toString());
+        LOG.info(" token: " + authentication.getPrincipal().toString());
+        LOG.info("isAdmin: " + u.isAdmin());
 
         u.setToken(token);
 
@@ -86,7 +86,7 @@ public class AuthController {
        return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "setAdmin", method = RequestMethod.GET)
+    @RequestMapping(value = "/setAdmin", method = RequestMethod.GET)
     public String setAdmin(){
         String result = "SUCCESS";
         try {

@@ -34,7 +34,7 @@ public class CustomAuthenticationProviderImp implements  CustomAuthenticationPro
         u.setUsername(name);
         u.setPassword(password);
         Optional<com.limonnana.be01.entity.User> userOptional = userService.userLogin(u);
-        if (userOptional.isPresent()) {
+        if (userOptional != null && userOptional.isPresent()) {
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
             final UserDetails principal = new User(name, password, grantedAuths);
