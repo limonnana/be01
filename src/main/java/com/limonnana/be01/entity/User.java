@@ -31,6 +31,12 @@ public class User {
     @Column
     private boolean isAdmin;
 
+    @Column
+    private String name;
+
+    @Column
+    private String lastName;
+
 
 
 

@@ -3,15 +3,13 @@ package com.limonnana.be01.controller;
 
 import com.limonnana.be01.entity.User;
 import com.limonnana.be01.service.UserService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/rest/users")
 public class UserController {
 
     private final UserService userService;
@@ -24,4 +22,11 @@ public class UserController {
     public List<User> getUsers(){
         return userService.getUsers();
     }
+
+    @RequestMapping(value = "/getuserbyusername/{username}", method = RequestMethod.GET)
+    public User getUserByUsername(@PathVariable String username){
+    User user = userService.getUserByUsername(username);
+    return user;
+    }
+
 }
