@@ -2,6 +2,7 @@ package com.limonnana.be01.service;
 
 import com.limonnana.be01.entity.User;
 import com.limonnana.be01.repository.UserRepository;
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface UserService {
     public User getUserByUsername(String username);
 
     public User saveUser(User user);
+
+    public User UpdateUser(User user);
 
 
 }

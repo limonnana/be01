@@ -61,12 +61,21 @@ public class UserServiceImp implements UserService{
     }
 
     public User getUserByUsername(String username){
-        return  userRepository.findByUsername(username).get();
+        User u = userRepository.findByUsername(username).get();
+        return  u;
     }
 
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+
+    public User UpdateUser(User user) {
+        User u = userRepository.findByUsername(user.getUsername()).get();
+        user.setPassword(u.getPassword());
+        user.setAdmin(u.isAdmin());
+        return userRepository.saveAndFlush(user);
     }
 
 
